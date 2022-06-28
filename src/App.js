@@ -1,30 +1,4 @@
 import { useState } from "react";
-import styled, { css } from "styled-components";
-
-const Monthdays = styled.div`
-  margin: 7px 0;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  justify-self: center;
-`;
-const MonthdaysDays = styled.div`
-  height: 32px;
-  width: 32px;
-  font-size: 20px;
-  font-weight: 400;
-  text-align: center;
-  justify-self: center;
-
-  ${(props) =>
-    props.currentDay === props.date
-      ? css`
-          background: crimson;
-          color: white;
-          border-radius: 50%;
-        `
-      : ""}
-`;
 
 function App() {
   const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
@@ -42,36 +16,44 @@ function App() {
     "Ноя",
     "Дек",
   ];
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
   // Текущая дата
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(
+    new Date(`${year}-${month + 1}-01`)
+  );
+
+  // Год
+  const [currentYear] = useState(currentDate.getFullYear());
 
   // Текущий месяц
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
 
   // День месяца
-  const monthDay = currentDate.getDate();
-
-  // Год
-  const year = currentDate.getFullYear();
+  const [currentMonthDay] = useState(currentDate.getDate());
 
   // День недели
-  const weekDay = currentDate.getDay();
+  const [weekDay, setCurrentWeekDay] = useState(currentDate.getDay());
 
   const showCurrentMonth = getMonth();
 
   // Функция возвращает количество дней в указанном месяце и году.
   function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
+    return new Date(year, month + 1, 0).getDate();
   }
 
   function handlePrevMonth() {
-    setCurrentDate(new Date(year, currentMonth - 1));
     setCurrentMonth(currentMonth - 1);
+    setCurrentDate(new Date(currentYear, currentMonth - 1));
+    setCurrentWeekDay(new Date(currentYear, currentMonth - 1).getDay());
   }
 
   function handleNextMonth() {
-    setCurrentDate(new Date(year, currentMonth + 1));
     setCurrentMonth(currentMonth + 1);
+    setCurrentDate(new Date(currentYear, currentMonth + 1));
+    setCurrentWeekDay(new Date(currentYear, currentMonth + 1).getDay());
   }
 
   // Функция возвращает массив дней текущего месяца (6 недель).
@@ -79,8 +61,8 @@ function App() {
     const countDayOnMonth = [];
 
     // Кол-во дней в каждом месяце
-    for (let i = 1; i <= 12; i++) {
-      countDayOnMonth.push(daysInMonth(i, year));
+    for (let i = 0; i <= 11; i++) {
+      countDayOnMonth.push(daysInMonth(i, currentYear));
     }
 
     let result = [];
@@ -90,27 +72,33 @@ function App() {
 
     // Проверка что бы всегда начинать выстаривать текущий месяц с понедельника
     if (weekDay > 1) {
-      countMonthDay = monthDay - (weekDay - 1);
+      countMonthDay = currentMonthDay - (weekDay - 1);
     } else if (weekDay === 0) {
-      countMonthDay = monthDay - 6;
+      countMonthDay = currentMonthDay - 6;
     } else {
-      countMonthDay = monthDay;
+      countMonthDay = currentMonthDay;
     }
 
+    console.log(countMonthDay);
+
     // Построение итогового массива
-    for (let i = 0; i < countDayOnMonth[currentMonth] + 7 - weekDay; i++) {
+    for (
+      let i = 0;
+      i < countDayOnMonth[currentMonth] + currentMonthDay - countMonthDay;
+      i++
+    ) {
       // Если countMonthDay больше кол-ва дней в месяце
       // дни начинаются сначала
-      if (countMonthDay + i > countDayOnMonth[currentMonth]) {
-        let count = countDayOnMonth[currentMonth] - (countMonthDay + 6);
+      if (i < currentMonthDay - countMonthDay) {
+        let count = countDayOnMonth[currentMonth - 1] + countMonthDay;
         result.push(count + i);
+      } else if (i > countMonthDay[currentMonth - 1] - countMonthDay) {
+        result.push(countMonthDay + i);
       } else {
         result.push(countMonthDay + i);
       }
     }
-    // for (let i = 0; i < 42 - result.length + 8 - weekDay; i++) {
-    //   result.push(i + 1);
-    // }
+    console.log(result.length);
     return result;
   }
 
@@ -133,7 +121,9 @@ function App() {
             >
               <i className="large material-icons">chevron_left</i>
             </button>
-            <div className="month">{months[currentMonth] + " " + year}</div>
+            <div className="month">
+              {months[currentMonth] + " " + currentYear}
+            </div>
             <button
               type="button"
               className="btn-flat transparent"
@@ -148,13 +138,11 @@ function App() {
               <div className="calendar__weekdays-day">{day}</div>
             ))}
           </div>
-          <Monthdays currentDay={monthDay}>
+          <div className="calendar__month">
             {showCurrentMonth.map((date) => (
-              <MonthdaysDays currentDay={monthDay} date={date}>
-                {date}
-              </MonthdaysDays>
+              <div className="calendar__month-day">{date}</div>
             ))}
-          </Monthdays>
+          </div>
         </div>
         <hr className="calendar__divider" />
         <div className="calendar__current-day"></div>
