@@ -1,0 +1,52 @@
+* {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	}
+
+	.wrapper {
+		max-width: 740px;
+  	margin: 0 auto;
+	}
+
+	.calendar {
+		&__header {
+			display: flex;
+			justify-content: space-between;
+			margin: 15px 15px;
+		}
+		&__title {
+			font-size: 32px;
+		}
+		&__divider {
+			border-bottom: 1px solid lightgrey;
+		}
+		&__picker {
+			margin: 0 10px ;
+		}
+		&__weekdays {
+			margin: 7px 0;
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			grid-column-start: 2;
+			gap: 10px;
+			&-day {
+				font-size: 14px;
+				font-weight: 700;
+				text-align: center;
+			}
+		}
+		&__picker-month {
+			padding: 15px 0;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 18px;
+			font-weight: 700;
+		}
+	}
+
+
+	.colorRed {
+		color: crimson;
+	}
