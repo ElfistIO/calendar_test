@@ -37,6 +37,7 @@ function App() {
   // День недели
   const [weekDay, setCurrentWeekDay] = useState(currentDate.getDay());
 
+  // Раскладка выбранного месяца
   const showCurrentMonth = getMonth();
 
   // Функция возвращает количество дней в указанном месяце и году.
@@ -44,12 +45,14 @@ function App() {
     return new Date(year, month + 1, 0).getDate();
   }
 
+  // Выбор предыдущего месяца
   function handlePrevMonth() {
     setCurrentMonth(currentMonth - 1);
     setCurrentDate(new Date(currentYear, currentMonth - 1));
     setCurrentWeekDay(new Date(currentYear, currentMonth - 1).getDay());
   }
 
+  // Выбор следующего месяца
   function handleNextMonth() {
     setCurrentMonth(currentMonth + 1);
     setCurrentDate(new Date(currentYear, currentMonth + 1));
@@ -81,14 +84,12 @@ function App() {
 
     console.log(countMonthDay);
 
-    // Построение итогового массива
+    // Построение итогового массива c днями предыдущего месяца до понедельника
     for (
       let i = 0;
       i < countDayOnMonth[currentMonth] + currentMonthDay - countMonthDay;
       i++
     ) {
-      // Если countMonthDay больше кол-ва дней в месяце
-      // дни начинаются сначала
       if (i < currentMonthDay - countMonthDay) {
         let count = countDayOnMonth[currentMonth - 1] + countMonthDay;
         result.push(count + i);
@@ -98,7 +99,11 @@ function App() {
         result.push(countMonthDay + i);
       }
     }
-    console.log(result.length);
+    // Достройка массива днями с общим количеством недель равным 6
+    let restResultLength = 42 - result.length;
+    for (let i = 0; i < restResultLength; i++) {
+      result.push(i + 1);
+    }
     return result;
   }
 
