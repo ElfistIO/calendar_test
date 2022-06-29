@@ -12,7 +12,7 @@
         background-color: darkgreen;
         height: 32px;
         width: 32px;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 20px;
         font-weight: 400;
         text-align: center;
@@ -20,6 +20,10 @@
         color: white;
         cursor: pointer;
       }
+    }
+    &_day:hover {
+      background-color: lightgrey;
+      border-radius: 8px;
     }
   }
 }

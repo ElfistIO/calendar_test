@@ -83,8 +83,6 @@ function App() {
       countDayOnMonth.push(daysInMonth(i, currentYear));
     }
 
-    let result = [];
-
     // День месяца, понедельника текущей недели
     let countMonthDay;
 
@@ -96,6 +94,9 @@ function App() {
     } else {
       countMonthDay = currentMonthDay;
     }
+
+    // Итоговый массив
+    let result = [];
 
     // Построение итогового массива c днями предыдущего месяца до понедельника
     for (
