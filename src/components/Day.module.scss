@@ -1,0 +1,25 @@
+.calendar {
+  &__month {
+    &_day {
+      height: 32px;
+      width: 32px;
+      font-size: 20px;
+      font-weight: 400;
+      text-align: center;
+      justify-self: center;
+      cursor: pointer;
+      &_active {
+        background-color: darkgreen;
+        height: 32px;
+        width: 32px;
+        border-radius: 4px;
+        font-size: 20px;
+        font-weight: 400;
+        text-align: center;
+        justify-self: center;
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+}

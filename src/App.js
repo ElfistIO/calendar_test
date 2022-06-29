@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Calendar } from "./components/Calendar";
 
 function App() {
   const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
@@ -26,16 +27,16 @@ function App() {
   );
 
   // Год
-  const [currentYear] = useState(currentDate.getFullYear());
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
 
   // Текущий месяц
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
+  let [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
 
   // День месяца
   const [currentMonthDay] = useState(currentDate.getDate());
 
   // День недели
-  const [weekDay, setCurrentWeekDay] = useState(currentDate.getDay());
+  const [currentWeekDay, setCurrentWeekDay] = useState(currentDate.getDay());
 
   // Раскладка выбранного месяца
   const showCurrentMonth = getMonth();
@@ -47,14 +48,28 @@ function App() {
 
   // Выбор предыдущего месяца
   function handlePrevMonth() {
-    setCurrentMonth(currentMonth - 1);
+    if (currentMonth !== 0) {
+      setCurrentMonth(currentMonth - 1);
+      setCurrentDate(new Date(currentYear, currentMonth - 1));
+      setCurrentWeekDay(new Date(currentYear, currentMonth - 1).getDay());
+      return;
+    }
+    setCurrentYear(currentYear - 1);
+    setCurrentMonth(11);
     setCurrentDate(new Date(currentYear, currentMonth - 1));
     setCurrentWeekDay(new Date(currentYear, currentMonth - 1).getDay());
   }
 
   // Выбор следующего месяца
   function handleNextMonth() {
-    setCurrentMonth(currentMonth + 1);
+    if (currentMonth !== 11) {
+      setCurrentMonth(currentMonth + 1);
+      setCurrentDate(new Date(currentYear, currentMonth + 1));
+      setCurrentWeekDay(new Date(currentYear, currentMonth + 1).getDay());
+      return;
+    }
+    setCurrentYear(currentYear + 1);
+    setCurrentMonth(0);
     setCurrentDate(new Date(currentYear, currentMonth + 1));
     setCurrentWeekDay(new Date(currentYear, currentMonth + 1).getDay());
   }
@@ -74,9 +89,9 @@ function App() {
     let countMonthDay;
 
     // Проверка что бы всегда начинать выстаривать текущий месяц с понедельника
-    if (weekDay > 1) {
-      countMonthDay = currentMonthDay - (weekDay - 1);
-    } else if (weekDay === 0) {
+    if (currentWeekDay > 1) {
+      countMonthDay = currentMonthDay - (currentWeekDay - 1);
+    } else if (currentWeekDay === 0) {
       countMonthDay = currentMonthDay - 6;
     } else {
       countMonthDay = currentMonthDay;
@@ -89,7 +104,9 @@ function App() {
       i++
     ) {
       if (i < currentMonthDay - countMonthDay) {
-        let count = countDayOnMonth[currentMonth - 1] + countMonthDay;
+        let count =
+          countDayOnMonth[(currentMonth === 0 ? 12 : currentMonth) - 1] +
+          countMonthDay;
         result.push(count + i);
       } else if (i > countMonthDay[currentMonth - 1] - countMonthDay) {
         result.push(countMonthDay + i);
@@ -138,14 +155,12 @@ function App() {
           <hr className="calendar__divider" />
           <div className="calendar__weekdays">
             {weekdays.map((day) => (
-              <div className="calendar__weekdays-day">{day}</div>
+              <div key={day} className="calendar__weekdays-day">
+                {day}
+              </div>
             ))}
           </div>
-          <div className="calendar__month">
-            {showCurrentMonth.map((date) => (
-              <div className="calendar__month-day">{date}</div>
-            ))}
-          </div>
+          <Calendar showCurrentMonth={showCurrentMonth} />
         </div>
         <hr className="calendar__divider" />
         <div className="calendar__current-day"></div>
