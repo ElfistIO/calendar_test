@@ -108,8 +108,6 @@ function App() {
           countDayOnMonth[(currentMonth === 0 ? 12 : currentMonth) - 1] +
           countMonthDay;
         result.push(count + i);
-      } else if (i > countMonthDay[currentMonth - 1] - countMonthDay) {
-        result.push(countMonthDay + i);
       } else {
         result.push(countMonthDay + i);
       }

@@ -5,7 +5,7 @@ export const Day = ({ date, id, currentMonth, currentYear }) => {
   const [isActive, setIsActive] = useState(false);
 
   function handleClick() {
-    console.log(date, currentMonth, currentYear);
+    console.log(date, currentMonth + 1, currentYear);
     isActive ? setIsActive(false) : setIsActive(true);
   }
   return (
