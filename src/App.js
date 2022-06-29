@@ -82,8 +82,6 @@ function App() {
       countMonthDay = currentMonthDay;
     }
 
-    console.log(countMonthDay);
-
     // Построение итогового массива c днями предыдущего месяца до понедельника
     for (
       let i = 0;
