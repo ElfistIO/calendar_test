@@ -83,7 +83,7 @@ function App() {
       countDayOnMonth.push(daysInMonth(i, currentYear));
     }
 
-    let result = [];
+    let result = {};
 
     // День месяца, понедельника текущей недели
     let countMonthDay;
@@ -97,6 +97,9 @@ function App() {
       countMonthDay = currentMonthDay;
     }
 
+    let prevStatePrevMon = [];
+    let prevStateCurMon = [];
+    let prevStateNextMon = [];
     // Построение итогового массива c днями предыдущего месяца до понедельника
     for (
       let i = 0;
@@ -107,18 +110,25 @@ function App() {
         let count =
           countDayOnMonth[(currentMonth === 0 ? 12 : currentMonth) - 1] +
           countMonthDay;
-        result.push(count + i);
-      } else if (i > countMonthDay[currentMonth - 1] - countMonthDay) {
-        result.push(countMonthDay + i);
+        let prevMonth = currentMonth - 1;
+        prevStatePrevMon.push(count + i);
+        result[prevMonth] = [...prevStatePrevMon, count + i];
       } else {
-        result.push(countMonthDay + i);
+        prevStateCurMon.push(countMonthDay + i);
+        result[currentMonth] = [...prevStateCurMon, countMonthDay + i];
       }
     }
+    console.log(result);
+
     // Достройка массива днями с общим количеством недель равным 6
-    let restResultLength = 42 - result.length;
+    let restResultLength = 42 - result[4].length - result[5].length;
     for (let i = 0; i < restResultLength; i++) {
-      result.push(i + 1);
+      let nextMonth = currentMonth + 1;
+      prevStateNextMon.push(i + 1);
+      result[nextMonth] = [...prevStateNextMon, i + 1];
     }
+
+    console.log(result);
     return result;
   }
 

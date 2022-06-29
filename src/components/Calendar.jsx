@@ -7,7 +7,7 @@ export const Calendar = ({ showCurrentMonth, currentMonth, currentYear }) => {
 
   return (
     <div className={style.calendar__month}>
-      {showCurrentMonth.map((date, index) => (
+      {Array.from(showCurrentMonth).map((date, index) => (
         <Day
           date={date}
           key={index}
