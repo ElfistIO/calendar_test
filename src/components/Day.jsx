@@ -1,11 +1,11 @@
 import { useState } from "react";
 import style from "./Day.module.scss";
 
-export const Day = ({ date, id }) => {
+export const Day = ({ date, id, currentMonth, currentYear }) => {
   const [isActive, setIsActive] = useState(false);
 
   function handleClick() {
-    console.log(id);
+    console.log(date, currentMonth, currentYear);
     isActive ? setIsActive(false) : setIsActive(true);
   }
   return (

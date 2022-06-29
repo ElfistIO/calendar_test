@@ -160,7 +160,11 @@ function App() {
               </div>
             ))}
           </div>
-          <Calendar showCurrentMonth={showCurrentMonth} />
+          <Calendar
+            showCurrentMonth={showCurrentMonth}
+            currentMonth={currentMonth}
+            currentYear={currentYear}
+          />
         </div>
         <hr className="calendar__divider" />
         <div className="calendar__current-day"></div>
